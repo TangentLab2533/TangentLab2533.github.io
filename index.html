@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TangentLab | 翻墙</title>
+    <!-- 引入字体图标增强视觉效果 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 背景设置 - 渐变+噪点增强液态玻璃层次感 */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* 背景渐变动画 */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 液态玻璃核心样式 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* 导航栏样式 */
+        nav.glass-card {
+            padding: 15px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #4cc9f0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #4cc9f0;
+        }
+
+        /* 主内容区样式 */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-section.glass-card {
+            width: 100%;
+            max-width: 1200px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .hero-title {
+            color: #fff;
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero-title span {
+            color: #4cc9f0;
+        }
+
+        .hero-desc {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* 价格套餐样式 */
+        .price-packages {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(76, 201, 240, 0.3);
+        }
+
+        .price-card h3 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .price-card .price {
+            color: #4cc9f0;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .price-card .desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 联系信息样式 */
+        .contact-info {
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+        }
+
+        .contact-info a {
+            color: #4cc9f0;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .cta-button {
+            padding: 14px 32px;
+            background: linear-gradient(90deg, #4361ee, #4cc9f0);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(76, 201, 240, 0.3);
+        }
+
+        /* 页脚样式 */
+        footer.glass-card {
+            margin-top: 30px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        /* 响应式适配 - 移动端优化 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+            }
+
+            .hero-section.glass-card {
+                padding: 40px 20px;
+            }
+
+            .price-packages {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .price-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 - 液态玻璃效果 -->
+    <nav class="glass-card">
+        <div class="logo">
+            <i class="fas fa-bolt"></i>
+            TangentLab
+        </div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#features">功能</a>
+            <a href="#pricing">价格</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </nav>
+
+    <!-- 主内容区 - 液态玻璃效果 -->
+    <main>
+        <section class="hero-section glass-card">
+            <h1 class="hero-title">超便宜<span>翻墙代理</span>服务</h1>
+            <p class="hero-desc">
+                我们可以提供网络代理服务，从而绕过限制访问国外网站，例如谷歌，油管，x，甚至一些不方便讲的网站，软件内部会详细说。
+                我们的服务操作简单，即开即用，为你带来极致的网络体验。
+                我们的软件尚在开发中，马上开发完毕，开发完毕后会第一时间开放下载链接。
+	    </p>
+
+            <!-- 价格套餐区域 -->
+            <div class="price-packages">
+                <div class="price-card">
+                    <h3>包月套餐</h3>
+                    <div class="price">￥14</div>
+                    <div class="desc">
+                        • 30天使用时长<br>
+                        • 多设备支持<br>
+                        • TangentLab技术支持
+                    </div>
+                </div>
+                <div class="price-card">
+                    <h3>包年套餐</h3>
+                    <div class="price">￥110</div>
+                    <div class="desc">
+                        • 365天使用时长<br>
+                        • 多设备支持<br>
+                        • 优先技术支持<br>
+                        • 立省￥58
+                    </div>
+                </div>
+                <div class="price-card">
+                    <h3>买断套餐</h3>
+                    <div class="price">￥266</div>
+                    <div class="desc">
+                        • 永久使用权限<br>
+                        • 无限设备支持<br>
+                        • 专属客服对接<br>
+                        • 终身免费更新
+                    </div>
+                </div>
+                <div class="price-card">
+                    <h3>线上洽谈</h3>
+                    <div class="price">定制价</div>
+                    <div class="desc">
+                        • 老顾客、熟人更低价格<br>
+                        • 客服有限答疑<br>
+                        • 定制化功能开发<br>
+                        • 7×24小时专属服务
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系信息 -->
+            <div class="contact-info">
+                <p>如需购买或咨询，请通过以下方式联系我们：</p>
+                <p>
+                    <i class="fab fa-telegram"></i> <a href="https://t.me/TangentLab" target="_blank">Telegram: @TangentLab（纸飞机）</a>  
+		    <br>
+		    <i class="fab fa-telegram"></i> <a href="https://github.com/TangentLab2533/tanproxyvpncotw" target="_blank">Github: Github介绍页面、软件发布页面</a>
+		    <br>
+		    <i class="fas fa-envelope"></i> <a href="mailto:tangent2533@gmail.com">Email: tangent2533@gmail.com（优先）</a>
+                    <br>
+                    <i class="fas fa-envelope"></i> <a href="mailto:2533434893@qq.com">Email: 2533434893@qq.com（备用）</a>
+		    <br><br><br>
+                    </i> <a href="g7orgpage.html" target="_blank">原G7组织网站点击此处</a>
+                </p>
+            </div>
+
+            
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="glass-card">
+        TangentLab &copy; 2025 All Rights Reserved
+    </footer>
+</body>
+</html>
