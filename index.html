@@ -1,329 +1,435 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TangentLab | 翻墙</title>
-    <!-- 引入字体图标增强视觉效果 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* 全局样式重置与基础设置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TangentLab | 优质代理服务</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --text-light: #475569;
+      --accent: #3b82f6;
+      --accent-dark: #2563eb;
+      --glass-bg: rgba(255, 255, 255, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.45);
+      --shadow-sm: 0 10px 25px rgba(0,0,0,0.06);
+      --shadow-md: 0 20px 40px rgba(0,0,0,0.10);
+      --radius: 16px;
+      --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        /* 背景设置 - 渐变+噪点增强液态玻璃层次感 */
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-x: hidden;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* 背景渐变动画 */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      padding: 16px;
+    }
 
-        /* 液态玻璃核心样式 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            transition: all 0.3s ease;
-        }
+    /* ─── 顶部导航 ─── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
 
-        /* 导航栏样式 */
-        nav.glass-card {
-            padding: 15px 30px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    header.hidden {
+      transform: translateY(-100%);
+    }
 
-        .logo {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .logo i {
-            color: #4cc9f0;
-        }
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+    /* 桌面导航 */
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
 
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
 
-        .nav-links a:hover {
-            color: #4cc9f0;
-        }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
 
-        /* 主内容区样式 */
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* 汉堡菜单（移动端） */
+    .hamburger {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px;
+    }
 
-        .hero-section.glass-card {
-            width: 100%;
-            max-width: 1200px;
-            padding: 60px 40px;
-            text-align: center;
-        }
+    /* 下拉菜单 */
+    .mobile-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 16px 20px;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow-md);
+    }
 
-        .hero-title {
-            color: #fff;
-            font-size: 48px;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
+    .mobile-menu a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 8px 0;
+    }
 
-        .hero-title span {
-            color: #4cc9f0;
-        }
+    .mobile-menu.show {
+      display: flex;
+    }
 
-        .hero-desc {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 18px;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
+    main {
+      margin-top: 90px; /* 给 fixed header 留空间 */
+      display: flex;
+      justify-content: center;
+    }
 
-        /* 价格套餐样式 */
-        .price-packages {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
+    .hero {
+      width: 100%;
+      max-width: 1080px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: clamp(40px, 6vw, 64px) clamp(24px, 5vw, 48px);
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-        .price-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            width: 250px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
-        }
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      line-height: 1.15;
+    }
 
-        .price-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(76, 201, 240, 0.3);
-        }
+    h1 span {
+      color: var(--accent);
+    }
 
-        .price-card h3 {
-            color: #fff;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
+    .lead {
+      font-size: clamp(1.1rem, 3vw, 1.25rem);
+      color: var(--text-light);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+    }
 
-        .price-card .price {
-            color: #4cc9f0;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin: 48px 0;
+    }
 
-        .price-card .desc {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            line-height: 1.5;
-        }
+    .price-card {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        /* 联系信息样式 */
-        .contact-info {
-            margin-top: 50px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 18px;
-        }
+    .price-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-md);
+    }
 
-        .contact-info a {
-            color: #4cc9f0;
-            text-decoration: none;
-            margin: 0 10px;
-        }
+    .price-card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
 
-        .cta-button {
-            padding: 14px 32px;
-            background: linear-gradient(90deg, #4361ee, #4cc9f0);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-top: 20px;
-        }
+    .price {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
 
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(76, 201, 240, 0.3);
-        }
+    .features {
+      color: var(--text-light);
+      font-size: 0.98rem;
+      line-height: 2;
+      text-align: left;
+    }
 
-        /* 页脚样式 */
-        footer.glass-card {
-            margin-top: 30px;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
+    .btn {
+      margin-top: auto;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px rgba(59,130,246,0.25);
+    }
 
-        /* 响应式适配 - 移动端优化 */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+    .btn:hover {
+      background: var(--accent-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(59,130,246,0.35);
+    }
 
-            .hero-title {
-                font-size: 32px;
-            }
+    .contact {
+      margin-top: 60px;
+      padding: 40px 28px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
 
-            .hero-desc {
-                font-size: 16px;
-            }
+    .contact h2 {
+      margin-bottom: 1.6rem;
+    }
 
-            .hero-section.glass-card {
-                padding: 40px 20px;
-            }
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 10px;
+      line-height: 2.2;
+    }
 
-            .price-packages {
-                flex-direction: column;
-                align-items: center;
-            }
+    footer {
+      margin-top: 80px;
+      padding: 24px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.92rem;
+      opacity: 0.9;
+    }
 
-            .price-card {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-    </style>
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero {
+        padding: 48px 24px;
+      }
+
+      main {
+        margin-top: 80px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .price {
+        font-size: 2.2rem;
+      }
+
+      .btn {
+        padding: 12px 28px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- 导航栏 - 液态玻璃效果 -->
-    <nav class="glass-card">
-        <div class="logo">
-            <i class="fas fa-bolt"></i>
-            TangentLab
+
+  <header id="header">
+    <div class="nav-container">
+      <div class="logo">
+        <i class="fa-solid fa-bolt"></i>
+        TangentLab
+      </div>
+
+      <div class="nav-links">
+        <a href="#">首页</a>
+        <a href="https://github.com/TangentLab2533/tanproxyvpncotw/releases/download/0/owovpn_instaler.exe" target="_blank">下载</a>
+        <a href="#pricing">价格</a>
+        <a href="#contact">联系我们</a>
+      </div>
+
+      <div class="hamburger" id="hamburger">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+    </div>
+
+    <!-- 移动端下拉菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#">首页</a>
+      <a href="https://github.com/TangentLab2533/tanproxyvpncotw/releases/download/0/owovpn_instaler.exe" target="_blank">下载</a>
+      <a href="#pricing">价格</a>
+      <a href="#contact">联系我们</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>实惠 · 稳定 · <span>代理</span></h1>
+      <p class="lead">
+        高速稳定的代理服务｜保护隐私｜多设备支持｜低延迟<br>
+        让网络更自由、更安全
+      </p>
+
+      <div class="packages" id="pricing">
+        <div class="price-card">
+          <h3>包月</h3>
+          <div class="price">￥14</div>
+          <div class="features">
+            • 30 天使用权<br>
+            • 多设备在线<br>
+            • 标准支持
+          </div>
+          <a href="https://t.me/TangentLab" class="btn" target="_blank">咨询购买</a>
         </div>
-        <div class="nav-links">
-            <a href="#home">首页</a>
-            <a href="https://github.com/TangentLab2533/tanproxyvpncotw/releases/download/0/owovpn_instaler.exe">下载</a>
-            <a href="#pricing">价格</a>
-            <a href="#contact">联系我们</a>
+
+        <div class="price-card">
+          <h3>包年</h3>
+          <div class="price">￥110 <small>省58元</small></div>
+          <div class="features">
+            • 365 天不限流量<br>
+            • 多设备支持<br>
+            • 优先响应
+          </div>
+          <a href="https://t.me/TangentLab" class="btn" target="_blank">咨询购买</a>
         </div>
-    </nav>
 
-    <!-- 主内容区 - 液态玻璃效果 -->
-    <main>
-        <section class="hero-section glass-card">
-            <h1 class="hero-title">超便宜<span>翻墙代理</span>服务</h1>
-            <p class="hero-desc">
-                我们可以提供网络代理服务，从而绕过限制访问国外网站，例如谷歌，油管，x，甚至一些不方便讲的网站，软件内部会详细说。
-                我们的服务操作简单，即开即用，为你带来极致的网络体验。
-                我们的软件已经开发完毕，您可以访问<a href="https://github.com/TangentLab2533/tanproxyvpncotw/releases/download/0/owovpn_instaler.exe" download>点击下载</a>。
-	    </p>
+        <div class="price-card">
+          <h3>买断</h3>
+          <div class="price">￥266</div>
+          <div class="features">
+            • 永久授权<br>
+            • 无限设备<br>
+            • 终身更新
+          </div>
+          <a href="https://t.me/TangentLab" class="btn" target="_blank">咨询购买</a>
+        </div>
 
-            <!-- 价格套餐区域 -->
-            <div class="price-packages">
-                <div class="price-card">
-                    <h3>包月套餐</h3>
-                    <div class="price">￥14</div>
-                    <div class="desc">
-                        • 30天使用时长<br>
-                        • 多设备支持<br>
-                        • TangentLab技术支持
-                    </div>
-                </div>
-                <div class="price-card">
-                    <h3>包年套餐</h3>
-                    <div class="price">￥110</div>
-                    <div class="desc">
-                        • 365天使用时长<br>
-                        • 多设备支持<br>
-                        • 优先技术支持<br>
-                        • 立省￥58
-                    </div>
-                </div>
-                <div class="price-card">
-                    <h3>买断套餐</h3>
-                    <div class="price">￥266</div>
-                    <div class="desc">
-                        • 永久使用权限<br>
-                        • 无限设备支持<br>
-                        • 专属客服对接<br>
-                        • 终身免费更新
-                    </div>
-                </div>
-                <div class="price-card">
-                    <h3>线上洽谈</h3>
-                    <div class="price">定制价</div>
-                    <div class="desc">
-                        • 老顾客、熟人更低价格<br>
-                        • 客服有限答疑<br>
-                        • 定制化功能开发<br>
-                        • 7×24小时专属服务
-                    </div>
-                </div>
-            </div>
+        <div class="price-card">
+          <h3>定制</h3>
+          <div class="price">面议</div>
+          <div class="features">
+            • 老用户优惠<br>
+            • 专属线路<br>
+            • 7×24 服务
+          </div>
+          <a href="https://t.me/TangentLab" class="btn" target="_blank">联系客服</a>
+        </div>
+      </div>
 
-            <!-- 联系信息 -->
-            <div class="contact-info">
-                <p>如需购买或咨询，请通过以下方式联系我们：</p>
-                <p>
-                    <i class="fab fa-telegram"></i> <a href="https://t.me/TangentLab" target="_blank">Telegram: @TangentLab（纸飞机）</a>  
-		    <br>
-		    <i class="fab fa-telegram"></i> <a href="https://github.com/TangentLab2533/tanproxyvpncotw" target="_blank">Github: Github介绍页面、软件发布页面</a>
-		    <br>
-		    <i class="fas fa-envelope"></i> <a href="mailto:tangent2533@gmail.com">Email: tangent2533@gmail.com（优先）</a>
-                    <br><br>
+      <div class="contact" id="contact">
+        <h2>联系方式</h2>
+        <p>
+          <i class="fa-brands fa-telegram"></i> 
+          <a href="https://t.me/TangentLab" target="_blank">@TangentLab（首选）</a><br>
+          <i class="fa-solid fa-envelope"></i> 
+          <a href="mailto:tangent2533@gmail.com">tangent2533@gmail.com</a><br>
+          <i class="fa-brands fa-github"></i> 
+          <a href="https://github.com/TangentLab2533/tanproxyvpncotw" target="_blank">GitHub</a>  
+            •  
+          <a href="https://github.com/TangentLab2533/tanproxyvpncotw/releases/download/0/owovpn_instaler.exe" target="_blank">直接下载</a>
+        </p>
+      </div>
+    </section>
+  </main>
 
-				<a href="http://8.154.28.102/g7orgpage.html" target="_blank">原G7组织网站点击此处</a>
-				<a href="http://t.owo.vin/" target="_blank">正切实验室官网</a>
-					
-                </p>
-            </div>
+  <footer>
+    <p>TangentLab © 2025 – All Rights Reserved</p>
+  </footer>
 
-            
-        </section>
-    </main>
+  <script>
+    // 汉堡菜单开关
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-    <!-- 页脚 -->
-    <footer class="glass-card">
-        TangentLab &copy; 2025 All Rights Reserved
-    </footer>
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+      hamburger.querySelector('i').classList.toggle('fa-bars');
+      hamburger.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // 点击菜单项后自动关闭（移动端）
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('show');
+        hamburger.querySelector('i').classList.add('fa-bars');
+        hamburger.querySelector('i').classList.remove('fa-times');
+      });
+    });
+
+    // 滚动隐藏顶部导航
+    let lastScrollY = window.scrollY;
+    const header = document.getElementById('header');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 120) {
+        if (window.scrollY > lastScrollY) {
+          // 向下滚动 → 隐藏
+          header.classList.add('hidden');
+        } else {
+          // 向上滚动 → 显示
+          header.classList.remove('hidden');
+        }
+      } else {
+        header.classList.remove('hidden');
+      }
+      lastScrollY = window.scrollY;
+    });
+  </script>
 </body>
 </html>
