@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 适配移动端 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面跳转中</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f7fa;
+            color: #222;
+            gap: 16px;
+        }
+        .tip-text {
+            font-size: 18px;
+            text-align: center;
+        }
+        .link-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .link-btn:hover {
+            background: #1d4ed8;
+        }
+        .count-text {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="tip-text">
+        页面正在自动跳转中...<br>
+        若跳转失败，请手动点击访问
+        <a class="link-btn" href="https://net.tanstudio.me">https://net.tanstudio.me</a>
+    </div>
+    <div class="count-text">
+        <span id="count">1.5</span> 秒后自动跳转
+    </div>
+
+    <script>
+        // 目标地址
+        const targetUrl = "https://net.tanstudio.me";
+        // 等待1500毫秒自动跳转
+        const delay = 100;
+        let count = delay / 1000;
+        const countDom = document.getElementById("count");
+
+        // 倒计时更新
+        const timer = setInterval(() => {
+            count -= 0.1;
+            countDom.innerText = count.toFixed(1);
+            if (count <= 0) {
+                clearInterval(timer);
+                // 自动跳转
+                window.location.href = targetUrl;
+            }
+        }, 100);
+
+        // 同时配置meta标签跳转兜底（浏览器JS失效时备用）
+        const meta = document.createElement("meta");
+        meta.httpEquiv = "refresh";
+        meta.content = `${delay/1000}; url=${targetUrl}`;
+        document.head.appendChild(meta);
+    </script>
+</body>
+</html>
